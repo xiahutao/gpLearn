@@ -586,3 +586,29 @@ class HmmStrategy(object):
         self._get_ret_outsample_opt()
         self._analyze()
         return self.annR, self.sharp, self.max_retrace, self.ret
+
+    def get_state_predict_proba(self):
+        self.insample = False
+        ret_df = []
+        signal_state_all = []
+        train_days = self.train_days
+        test_days = self.test_days
+        for i in range(train_days, len(self.data_set), test_days):
+            if i + test_days >= len(self.data_set):
+                all_set = self.data_set.iloc[i - train_days:]
+                train_set = self.data_set.iloc[i - train_days:i]
+                test_set = self.data_set.iloc[i:]
+            else:
+                all_set = self.data_set.iloc[i - train_days:i + test_days]
+                train_set = self.data_set.iloc[i - train_days:i]
+                test_set = self.data_set.iloc[i:i + test_days]
+            model, hidden_states, long_states, short_states, random_states = self.get_longshort_state_from_cumsum(
+                train_set)
+            hidden_states_predict = []
+            test_df = all_set[self.cols_features]
+            len_train = len(train_set)
+            len_test = len(test_set)
+            for n in range(len(test_set)):
+                predic = model.predict_proba(test_df.head(len_train + n + 1).tail(len_test))[-1]
+                hidden_states_predict.append(predic)
+

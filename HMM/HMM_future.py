@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
-from gpLearn.HMM.HMM_function import *
-
+import sys
+sys.path.append('C:\\Users\\51951\\PycharmProjects')  # 新加入的
+sys.path.append('C:\\Users\\51951\\PycharmProjects\\joinquant')  # 新加入的
+from HMM.HMM_function import *
 import numpy as np
 from matplotlib import cm, pyplot as plt
-from get_data.get_stock_hq import stock_price, index_stocks
 import seaborn as sns
 import pandas as pd
-from backtest_func import yearsharpRatio, maxRetrace, annROR
+from HMM.backtest_func import yearsharpRatio, maxRetrace, annROR
 from jqdatasdk import *
-from configDB import *
+from DataFactory.configDB import *
 
 auth(JOINQUANT_USER, JOINQUANT_PW)
 import warnings
