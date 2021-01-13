@@ -6,13 +6,15 @@
 '''
 
 # 导入函数库
-import jqdatasdk
+from jqdatasdk import *
+from DataFactory.configDB import *
 import numpy as np
 import pandas as pd
 import math
 from statsmodels import regression
 import statsmodels.api as sm
 import matplotlib.pyplot as plt
+auth(JOINQUANT_USER, JOINQUANT_PW)
 
 
 def winsorize(factor, std=3, have_negative=True):
@@ -73,7 +75,7 @@ def neutralization(factor, mkt_cap=False, industry=True):
 
 # 为股票池添加行业标记,return df格式 ,为中性化函数的子函数
 def get_industry_exposure(stock_list):
-    df = pd.DataFrame(index=jqdatasdk.get_industries(name='sw_l1').index, columns=stock_list)
+    df = pd.DataFrame(index=get_industries(name='sw_l1').index, columns=stock_list)
     for stock in stock_list:
         try:
             df[stock][get_industry_code_from_security(stock)] = 1
@@ -84,10 +86,10 @@ def get_industry_exposure(stock_list):
 
 # 查询个股所在行业函数代码（申万一级） ,为中性化函数的子函数
 def get_industry_code_from_security(security, date=None):
-    industry_index = jqdatasdk.get_industries(name='sw_l1').index
+    industry_index = get_industries(name='sw_l1').index
     for i in range(0, len(industry_index)):
         try:
-            index = jqdatasdk.get_industry_stocks(industry_index[i], date=date).index(security)
+            index = get_industry_stocks(industry_index[i], date=date).index(security)
             return industry_index[i]
         except:
             continue
@@ -101,7 +103,7 @@ def get_industry_code_from_security(security, date=None):
 # print stocks_industry
 
 def get_win_stand_neutra(stocks):
-    h = jqdatasdk.get_fundamentals(query(valuation.pb_ratio, valuation.code, valuation.market_cap) \
+    h = get_fundamentals(query(valuation.pb_ratio, valuation.code, valuation.market_cap) \
                          .filter(valuation.code.in_(stocks)))
     stocks_pb_se = pd.Series(list(h.pb_ratio), index=list(h.code))
     stocks_pb_win_standse = standardize(winsorize(stocks_pb_se))
@@ -112,7 +114,7 @@ def get_win_stand_neutra(stocks):
 
 if __name__ == '__main__':
     # 对沪深300成分股完成
-    stocks = jqdatasdk.get_index_stocks('000300.XSHG')
+    stocks = get_index_stocks('000300.XSHG')
     print(get_win_stand_neutra(stocks))
 
 

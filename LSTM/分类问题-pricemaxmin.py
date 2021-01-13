@@ -53,7 +53,7 @@ if __name__ == '__main__':
     data_path = 'c:/e/lstm/'
     mpl.rcParams['font.sans-serif'] = ['KaiTi']  # 指定默认字体FangSong仿宋
     mpl.rcParams['axes.unicode_minus'] = False  # 解决保存图像是负号'-'显示为方块的问题
-    train_use = 2  # 0训练网络，找到规律后保存成文件，1直接读取保存的规律文件，来进行实际预测,2直接读取保存的规律文件，来进行实际预测
+    train_use = 0  # 0训练网络，找到规律后保存成文件，1直接读取保存的规律文件，来进行实际预测,2直接读取保存的规律文件，来进行实际预测
     filename = __file__.split(".")[0].split('/')[-1]
 
     trainxycsv = pd.read_csv(data_path + 'price_maxmin_x_train_10.csv', index_col=0, header=0)  # 把csv文件里的内容读出来

@@ -56,24 +56,21 @@ if __name__ == '__main__':
     train_use = 0  # 0训练网络，找到规律后保存成文件，1直接读取保存的规律文件，来进行实际预测,2直接读取保存的规律文件，来进行实际预测
     filename = __file__.split(".")[0].split('/')[-1]
 
-    trainxycsv = pd.read_csv(data_path + 'ocm_x_train_6.csv', index_col=0, header=0)  # 把csv文件里的内容读出来
-    testxycsv = pd.read_csv(data_path + 'ocm_x_test_6.csv', index_col=0, header=0)  # 把csv文件里的内容读出来
-    prexycsv = pd.read_csv(data_path + 'ocm_x_pre_6.csv', index_col=0, header=0)  # 把csv文件里的内容读出来
+    trainxycsv = pd.read_csv(data_path + 'x_train_6.csv', index_col=0, header=0)  # 把csv文件里的内容读出来
+    testxycsv = pd.read_csv(data_path + 'x_test_6.csv', index_col=0, header=0)  # 把csv文件里的内容读出来
+    prexycsv = pd.read_csv(data_path + 'x_pre_6.csv', index_col=0, header=0)  # 把csv文件里的内容读出来
     train_data = torch.tensor(trainxycsv.values, dtype=torch.float)  # 把xy数据转化成pytorch的tensor格式
     test_data = torch.tensor(testxycsv.values, dtype=torch.float)  # 把xy数据转化成pytorch的tensor格式
     pre_data = torch.tensor(prexycsv.values, dtype=torch.float)  # 把xy数据转化成pytorch的tensor格式
     test_data_count = 500  # 最后留100个数据作为测试用
     xtrain = train_data[:, 0:-2]  # 把1000个数据中的900个作为训练的数据x
-    # xtrain = train_data[:, 0:10]
     # xtrain = guiyimaxmin(xtrain)  # 把数据归一化一下
     ytrain = train_data[:, [-1]]  # 把1000个数据中的900个作为训练的数据y
     xtest = test_data[:, 0:-2]  # 把1000个数据中的最后100个作为测试数据x
-    # xtest = test_data[:, 0:10]
     # xtest = guiyimaxmin(xtest)  # 把数据归一化一下
     ytest = test_data[:, [-1]]  # 把1000个数据中的最后100个作为测试数据
 
     xpredict = pre_data[:, 0:-2]  # 把1000个数据中的最后100个作为验证数据x
-    # xpredict = pre_data[:, 0:10]
     # xtest = guiyimaxmin(xtest)  # 把数据归一化一下
     ypredict = pre_data[:, [-1]]  # 把1000个数据中的最后100个作为测试数据
     # ypre_value = data[-test_data_count:, [-2]]
