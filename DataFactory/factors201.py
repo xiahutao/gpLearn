@@ -1541,6 +1541,9 @@ class Alphas(object):
     def get_alpha_methods(self):
         return list(filter(lambda x: x.startswith('alpha') and callable(getattr(self, x)), dir(self)))
 
+    def get_fund_methods(self):
+        return list(filter(lambda x: x.startswith('fund') and callable(getattr(self, x)), dir(self)))
+
 
 # Alpha=Alphas(data)
 # alpha_use=Alpha.alpha162()
