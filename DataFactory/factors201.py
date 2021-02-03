@@ -394,7 +394,7 @@ class Alphas(object):
     def fund030(self):
         return skewness(self.ex_log_ret, 252 * 5)
 
-    # fund011-015 半年、年、2年、3年、5年对数收益的胜率
+    # fund031-035 半年、年、2年、3年、5年对数收益的胜率
     def fund031(self):
         return positive_ratio(self.log_ret, 126)
 

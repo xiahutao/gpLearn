@@ -41,12 +41,16 @@ if __name__ == '__main__':
     path = 'c:/Users/51951/PycharmProjects/gpLearn/'
     resualt_path = 'c:/g/lfp/fund_factor/'
     future_period = 20
+    code = '402003'
     sdate = '2011-01-01'
-    edate = '2021-1-11'
+    edate = '2021-1-25'
     today = datetime.date.today()
-    fund_value = pd.read_hdf(resualt_path + 'fund_value_402004.h5', 'all')\
+    fund_value = pd.read_hdf(resualt_path + 'fund_value_402003.h5', 'all')\
         .rename(columns={'day': 'date_time'})
-    benchmark = stock_price('000300.XSHG', '1d', sdate, today)
+    if code == '402003':
+        benchmark = stock_price('000012.XSHG', '1d', sdate, today)
+    else:
+        benchmark = stock_price('000300.XSHG', '1d', sdate, today)
     benchmarknet = benchmark[['tradedate', 'close']].rename(columns=
                                                             {'tradedate': 'date_time', 'close': 'b_mark'})
     benchmarknet.date_time = benchmarknet.date_time.apply(lambda s: str(s)[:10])
@@ -75,8 +79,8 @@ if __name__ == '__main__':
     er = []
     for code, group in fund_value_bench.groupby(['code']):
         print(code)
-        if code not in lst:
-            continue
+        # if code not in lst:
+        #     continue
         t0 = time.time()
         hq = group
         Alpha = Alphas(group)
@@ -92,7 +96,7 @@ if __name__ == '__main__':
         ret.to_hdf(resualt_path + 'fund_factor.h5', str(code))
         print(time.time() - t0)
     df = pd.DataFrame(er, columns=['code', 'feature'])
-    df.to_csv(resualt_path + 'error.csv')
+    df.to_csv(resualt_path + 'error_402003.csv')
         # indicator_df.append(ret)
     # indicator_df = pd.concat(indicator_df)
     # print(indicator_df.head(10))
